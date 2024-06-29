@@ -10,7 +10,8 @@ class CGMReceiver : BroadcastReceiver() {
     companion object {
         private const val TAG = "CGMReceiver"
         const val ACTION = Intents.JUGGLUCO_NEW_CGM
-        private const val CGMVALUE = "$ACTION.glucose"
+        private const val CGMVALUE = "$ACTION.mgdl" // CGM glucose value in mg/dL
+        private const val RATE = "$ACTION.Rate"  // Rate of change
     }
 
     private var onUpdateListener: OnUpdateListener? = null
@@ -22,20 +23,24 @@ class CGMReceiver : BroadcastReceiver() {
             return
         }
 
-        val cgmValue = intent.getFloatExtra(CGMVALUE, 0f)
-        Log.i(TAG, "Received glucose: $cgmValue")
+        // CGM value
+        val cgmValue = intent.getIntExtra(CGMVALUE, 0)
+        val rate = intent.getFloatExtra(RATE, 0f)
+
+        val cgmString = "$cgmValue mg/dL, rate: $rate mg/dL/min, trend: ${getDexcomTrend(rate)}"
+        Log.i(TAG, "Received new CGM value: $cgmString")
 
         // Save the new glucose value to SharedPreferences
-        saveLastGlucoseValue(context, cgmValue)
+        saveLastGlucoseValue(context, cgmString)
 
         // Notify listener
-        onUpdateListener?.onUpdate(cgmValue)
+        onUpdateListener?.onUpdate(cgmString)
     }
 
-    private fun saveLastGlucoseValue(context: Context, glucose: Float) {
+    private fun saveLastGlucoseValue(context: Context, glucose: String) {
         val sharedPreferences = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
-            putFloat("last_glucose_value_key", glucose)
+            putString("last_glucose_value_key", glucose)
             apply()
         }
     }
@@ -45,6 +50,16 @@ class CGMReceiver : BroadcastReceiver() {
     }
 
     interface OnUpdateListener {
-        fun onUpdate(glucose: Float)
+        fun onUpdate(glucose: String)
+    }
+
+    fun getDexcomTrend(rate: Float): String {
+        if (rate >= 3.5f) return "DoubleUp"
+        if (rate >= 2.0f) return "SingleUp"
+        if (rate >= 1.0f) return "FortyFiveUp"
+        if (rate > -1.0f) return "Flat"
+        if (rate > -2.0f) return "FortyFiveDown"
+        if (rate > -3.5f) return "SingleDown"
+        return if (java.lang.Float.isNaN(rate)) "" else "DoubleDown"
     }
 }
