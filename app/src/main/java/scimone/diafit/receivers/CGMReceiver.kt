@@ -1,4 +1,4 @@
-package scimone.diafit
+package scimone.diafit.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,23 +7,29 @@ import android.util.Log
 
 class CGMReceiver : BroadcastReceiver() {
 
+    companion object {
+        private const val TAG = "CGMReceiver"
+        const val ACTION = Intents.JUGGLUCO_NEW_CGM
+        private const val CGMVALUE = "$ACTION.glucose"
+    }
+
     private var onUpdateListener: OnUpdateListener? = null
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
         if (action != ACTION) {
-            Log.e(LOG_ID, "Unexpected action=$action")
+            Log.e(TAG, "Unexpected action=$action")
             return
         }
 
-        val glucose = intent.getFloatExtra(GLUCOSECUSTOM, 0f)
-        Log.i(LOG_ID, "Received glucose: $glucose")
+        val cgmValue = intent.getFloatExtra(CGMVALUE, 0f)
+        Log.i(TAG, "Received glucose: $cgmValue")
 
         // Save the new glucose value to SharedPreferences
-        saveLastGlucoseValue(context, glucose)
+        saveLastGlucoseValue(context, cgmValue)
 
         // Notify listener
-        onUpdateListener?.onUpdate(glucose)
+        onUpdateListener?.onUpdate(cgmValue)
     }
 
     private fun saveLastGlucoseValue(context: Context, glucose: Float) {
@@ -40,11 +46,5 @@ class CGMReceiver : BroadcastReceiver() {
 
     interface OnUpdateListener {
         fun onUpdate(glucose: Float)
-    }
-
-    companion object {
-        private const val LOG_ID = "CGMReceiver"
-        private const val ACTION = "glucodata.Minute"
-        private const val GLUCOSECUSTOM = "glucodata.Minute.glucose"
     }
 }

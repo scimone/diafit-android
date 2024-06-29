@@ -24,9 +24,38 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="scimone.diafit.CGMReceiver" android:enabled="true" android:exported="true">
+        <receiver android:name=".receivers.CGMReceiver" android:enabled="true" android:exported="true">
             <intent-filter>
                 <action android:name="glucodata.Minute"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.NSClientReceiver" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="info.nightscout.client.NS_BRIDGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="info.nightscout.client.NEW_FOOD" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="info.nightscout.client.NEW_DEVICESTATUS" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="info.nightscout.client.NEW_SGV" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="info.nightscout.client.NEW_TREATMENT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="info.nightscout.client.CHANGED_TREATMENT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="info.nightscout.client.REMOVED_TREATMENT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="info.nightscout.client.NEW_PROFILE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.eveningoutpost.dexdrip.NewCalibration" />
             </intent-filter>
         </receiver>
     </application>

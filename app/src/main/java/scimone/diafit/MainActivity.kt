@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import scimone.diafit.receivers.CGMReceiver
 import scimone.diafit.ui.theme.DiafitTheme
 
 class MainActivity : ComponentActivity(), CGMReceiver.OnUpdateListener {
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity(), CGMReceiver.OnUpdateListener {
         super.onCreate(savedInstanceState)
         cgmReceiver = CGMReceiver()
         cgmReceiver?.setOnUpdateListener(this)
-        registerReceiver(cgmReceiver, IntentFilter("glucodata.Minute"), RECEIVER_EXPORTED)
+        registerReceiver(cgmReceiver, IntentFilter(CGMReceiver.ACTION), RECEIVER_EXPORTED)
         Log.i("MainActivity", "Receiver registered")
 
         setContent {
