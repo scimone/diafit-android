@@ -47,9 +47,9 @@ class MainActivity : ComponentActivity(), CGMReceiver.OnUpdateListener {
         }
     }
 
-    override fun onUpdate(newCgmValue: Float) {
+    override fun onUpdate(newCgmValue: String) {
         Log.d("MainActivity", "New glucose value received: $newCgmValue")
-        cgmValue.value = newCgmValue.toString()
+        cgmValue.value = newCgmValue
     }
 
     override fun onDestroy() {
