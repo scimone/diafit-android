@@ -17,6 +17,7 @@ class CGMReceiver : BroadcastReceiver() {
         const val ACTION = Intents.JUGGLUCO_NEW_CGM
         private const val CGMVALUE = "$ACTION.mgdl" // CGM glucose value in mg/dL
         private const val RATE = "$ACTION.Rate"  // Rate of change
+        private const val TIMESTAMP = "$ACTION.Time" // Timestamp of the CGM value
     }
 
     private var onUpdateListener: OnUpdateListener? = null
@@ -31,21 +32,20 @@ class CGMReceiver : BroadcastReceiver() {
         // CGM value
         val cgmValue = intent.getIntExtra(CGMVALUE, 0)
         val rate = intent.getFloatExtra(RATE, 0f)
+        val timestamp = intent.getLongExtra(TIMESTAMP, 0)
 
         val cgmString = "$cgmValue mg/dL, rate: $rate mg/dL/min, trend: ${getDexcomTrend(rate)}"
         Log.i(TAG, "Received new CGM value: $cgmString")
 
         // Save the new glucose value to SharedPreferences
         saveLastCGMValue(context, cgmString)
-        insertCGMValue(cgmValue)
+        insertCGMValue(timestamp, cgmValue)
 
         // Notify listener
         onUpdateListener?.onUpdate(cgmString)
     }
 
-    private fun insertCGMValue(cgmValue: Int) {
-        // Insert the new CGM value into CGM Table
-        val timestamp = System.currentTimeMillis() // Replace with actual timestamp from sgvsJson
+    private fun insertCGMValue(timestamp: Long, cgmValue: Int) {
 
         CoroutineScope(Dispatchers.IO).launch {
             DiafitApplication.db.cgmDao().insert(CGMTable(timestamp, cgmValue))
