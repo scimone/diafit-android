@@ -26,11 +26,14 @@ class MainActivity : ComponentActivity(), CGMReceiver.OnUpdateListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Register the CGMReceiver
         cgmReceiver = CGMReceiver()
         cgmReceiver?.setOnUpdateListener(this)
         registerReceiver(cgmReceiver, IntentFilter(CGMReceiver.ACTION), RECEIVER_EXPORTED)
         Log.i("MainActivity", "Receiver registered")
 
+        // Set the content of the activity
         setContent {
             DiafitTheme {
                 // A surface container using the 'background' color from the theme

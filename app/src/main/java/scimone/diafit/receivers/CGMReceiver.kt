@@ -4,6 +4,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import scimone.diafit.DiafitApplication
+import scimone.diafit.db.CGMTable
 
 class CGMReceiver : BroadcastReceiver() {
 
@@ -31,16 +36,29 @@ class CGMReceiver : BroadcastReceiver() {
         Log.i(TAG, "Received new CGM value: $cgmString")
 
         // Save the new glucose value to SharedPreferences
-        saveLastGlucoseValue(context, cgmString)
+        saveLastCGMValue(context, cgmString)
+        insertCGMValue(cgmValue)
 
         // Notify listener
         onUpdateListener?.onUpdate(cgmString)
     }
 
-    private fun saveLastGlucoseValue(context: Context, glucose: String) {
+    private fun insertCGMValue(cgmValue: Int) {
+        // Insert the new CGM value into CGM Table
+        val timestamp = System.currentTimeMillis() // Replace with actual timestamp from sgvsJson
+
+        CoroutineScope(Dispatchers.IO).launch {
+            DiafitApplication.db.cgmDao().insert(CGMTable(timestamp, cgmValue))
+            Log.d(TAG, "Inserted CGM value into the database: $cgmValue at $timestamp")
+        }
+    }
+
+    private fun saveLastCGMValue(context: Context, cgmValue: String) {
+
+        // Save the new CGM value to SharedPreferences
         val sharedPreferences = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
-            putString("last_glucose_value_key", glucose)
+            putString("last_glucose_value_key", cgmValue)
             apply()
         }
     }
