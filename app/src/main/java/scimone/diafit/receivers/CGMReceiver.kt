@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import scimone.diafit.DiafitApplication
-import scimone.diafit.db.CGMTable
+import scimone.diafit.db.CGMEntity
 
 class CGMReceiver : BroadcastReceiver() {
 
@@ -41,7 +41,7 @@ class CGMReceiver : BroadcastReceiver() {
 
     private fun insertCGMValue(timestamp: Long, cgmValue: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            DiafitApplication.db.cgmDao().insert(CGMTable(timestamp, cgmValue))
+            DiafitApplication.db.cgmDao().insert(CGMEntity(timestamp, cgmValue))
             Log.d(TAG, "Inserted CGM value into the database: $cgmValue at $timestamp")
         }
     }

@@ -9,13 +9,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.activity.compose.setContent
-import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import scimone.diafit.db.CGMTable
+import scimone.diafit.db.CGMEntity
 import scimone.diafit.ui.theme.DiafitTheme
 import scimone.diafit.viewmodel.CGMViewModel
 
@@ -36,14 +35,14 @@ class MainActivity : ComponentActivity() {
                         Greeting("Anna")
                         val latestCGMValue by viewModel.latestCGMValue.observeAsState(null)
                         latestCGMValue?.let {
-                            NewestCGMValue(it.cgmValue.toString())
+                            NewestCGMValue(it.value.toString())
                         }
                     }
                 }
             }
         }
 
-        val mockCGMValue = CGMTable(System.currentTimeMillis(), 120)
+        val mockCGMValue = CGMEntity(System.currentTimeMillis(), 0)
         viewModel.insertCGMValue(mockCGMValue)
     }
 }

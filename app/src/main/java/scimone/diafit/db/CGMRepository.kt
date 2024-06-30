@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 
 class CGMRepository(private val db: AppDatabase) {
 
-    fun getLatestCGM(): LiveData<CGMTable> {
+    fun getLatestCGM(): LiveData<CGMEntity> {
         return db.cgmDao().getLatest()
     }
 
-    suspend fun insertCGMValue(cgmValue: CGMTable) {
+    suspend fun insertCGMValue(cgmValue: CGMEntity) {
         db.cgmDao().insert(cgmValue)
     }
 }

@@ -7,8 +7,8 @@ import androidx.room.Index
 @Entity(
     indices = [Index(value = ["timestamp"], unique = true)]
 )
-data class CGMTable(
+data class CGMEntity(
     val timestamp: Long,
-    val cgmValue: Int,
+    val value: Int,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 )

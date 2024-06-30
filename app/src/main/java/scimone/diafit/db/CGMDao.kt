@@ -8,8 +8,8 @@ import androidx.room.Query
 @Dao
 interface CGMDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(cgmValue: CGMTable)
+    fun insert(cgmValue: CGMEntity)
 
-    @Query("SELECT * FROM CGMTable ORDER BY timestamp DESC LIMIT 1")
-    fun getLatest(): LiveData<CGMTable>
+    @Query("SELECT * FROM CGMEntity ORDER BY timestamp DESC LIMIT 1")
+    fun getLatest(): LiveData<CGMEntity>
 }
