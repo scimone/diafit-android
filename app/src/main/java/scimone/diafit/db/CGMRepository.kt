@@ -2,13 +2,13 @@ package scimone.diafit.db
 
 import androidx.lifecycle.LiveData
 
-class CGMRepository(private val db: AppDatabase) {
+class CGMRepository(private val db: CGMDao) {
 
     fun getLatestCGM(): LiveData<CGMEntity> {
-        return db.cgmDao().getLatest()
+        return db.getLatest()
     }
 
     suspend fun insertCGMValue(cgmValue: CGMEntity) {
-        db.cgmDao().insert(cgmValue)
+        db.insert(cgmValue)
     }
 }

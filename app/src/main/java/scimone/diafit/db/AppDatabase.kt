@@ -1,5 +1,6 @@
 package scimone.diafit.db
 
+import scimone.diafit.db.BolusDao
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
