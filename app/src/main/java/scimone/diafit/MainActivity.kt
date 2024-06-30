@@ -41,9 +41,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-        val mockCGMValue = CGMEntity(System.currentTimeMillis(), 0)
-        viewModel.insertCGMValue(mockCGMValue)
     }
 }
 
