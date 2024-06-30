@@ -1,64 +1,50 @@
 package scimone.diafit
 
-import android.content.Context
-import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.activity.compose.setContent
+import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import scimone.diafit.receivers.CGMReceiver
+import scimone.diafit.db.CGMTable
 import scimone.diafit.ui.theme.DiafitTheme
+import scimone.diafit.viewmodel.CGMViewModel
 
-class MainActivity : ComponentActivity(), CGMReceiver.OnUpdateListener {
-    private val cgmValue = mutableStateOf("")
+class MainActivity : ComponentActivity() {
 
-    private var cgmReceiver: CGMReceiver? = null
+    private val viewModel: CGMViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Register the CGMReceiver
-        cgmReceiver = CGMReceiver()
-        cgmReceiver?.setOnUpdateListener(this)
-        registerReceiver(cgmReceiver, IntentFilter(CGMReceiver.ACTION), RECEIVER_EXPORTED)
-        Log.i("MainActivity", "Receiver registered")
-
-        // Set the content of the activity
         setContent {
             DiafitTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
                         Greeting("Anna")
-                        NewestCGMValue(cgmValue.value)
+                        val latestCGMValue by viewModel.latestCGMValue.observeAsState(null)
+                        latestCGMValue?.let {
+                            NewestCGMValue(it.cgmValue.toString())
+                        }
                     }
                 }
             }
         }
-    }
 
-    override fun onUpdate(newCgmValue: String) {
-        Log.d("MainActivity", "New glucose value received: $newCgmValue")
-        cgmValue.value = newCgmValue
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(cgmReceiver)
-        Log.i("MainActivity", "Receiver unregistered")
+        val mockCGMValue = CGMTable(System.currentTimeMillis(), 120)
+        viewModel.insertCGMValue(mockCGMValue)
     }
 }
 
