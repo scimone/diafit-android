@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import scimone.diafit.db.BolusEntity
+import scimone.diafit.db.CarbsEntity
 import scimone.diafit.ui.theme.DiafitTheme
 import scimone.diafit.viewmodel.HomeViewModel
 
@@ -40,6 +41,10 @@ class MainActivity : ComponentActivity() {
                         val allBolusFromToday by viewModel.allBolusFromToday.observeAsState(listOf())
                         for (bolus in allBolusFromToday) {
                             BolusEntry(bolus)
+                        }
+                        val allCarbsFromToday by viewModel.allCarbsFromToday.observeAsState(listOf())
+                        for (carbs in allCarbsFromToday) {
+                            CarbsEntry(carbs)
                         }
                     }
                 }
@@ -68,6 +73,14 @@ fun NewestCGMValue(cgmValue: String, modifier: Modifier = Modifier) {
 fun BolusEntry(bolus: BolusEntity, modifier: Modifier = Modifier) {
     Text(
         text = "Bolus: ${bolus.amount}, Time: ${bolus.timestamp}",
+        modifier = modifier
+    )
+}
+
+@Composable
+fun CarbsEntry(carbs: CarbsEntity, modifier: Modifier = Modifier) {
+    Text(
+        text = "Carbs: ${carbs.amount}, Time: ${carbs.timestamp}",
         modifier = modifier
     )
 }

@@ -1,5 +1,6 @@
 package scimone.diafit.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -11,6 +12,7 @@ interface CarbsDao {
     suspend fun insert(carbs: CarbsEntity)
 
     // get all entries from today, ordered by timestamp descending
-    @Query("SELECT * FROM CarbsEntity WHERE timestamp >= :startOfDay ORDER BY timestamp DESC")
-    suspend fun getAllFromToday(startOfDay: Long): List<CarbsEntity>
+
+    @Query("SELECT * FROM CarbsEntity WHERE timestamp >= :startOfDay")
+    fun getAllFromToday(startOfDay: Long): LiveData<List<CarbsEntity>>
 }

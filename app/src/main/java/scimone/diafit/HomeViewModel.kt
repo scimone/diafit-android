@@ -11,12 +11,15 @@ import scimone.diafit.db.CGMRepository
 import scimone.diafit.db.BolusEntity
 import scimone.diafit.db.BolusRepository
 import scimone.diafit.DiafitApplication
+import scimone.diafit.db.CarbsEntity
+import scimone.diafit.db.CarbsRepository
 import java.util.*
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val cgmRepository: CGMRepository = CGMRepository(DiafitApplication.db.cgmDao())
     private val bolusRepository: BolusRepository = BolusRepository(DiafitApplication.db.bolusDao())
+    private val carbsRepository: CarbsRepository = CarbsRepository(DiafitApplication.db.carbsDao())
 
     val latestCGMValue: LiveData<CGMEntity> = cgmRepository.getLatestCGM()
 
@@ -31,6 +34,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
 
     val allBolusFromToday: LiveData<List<BolusEntity>> = bolusRepository.getAllFromToday(startOfDay)
+    val allCarbsFromToday: LiveData<List<CarbsEntity>> = carbsRepository.getAllFromToday(startOfDay)
 
     fun insertCGMValue(cgmValue: CGMEntity) {
         viewModelScope.launch(Dispatchers.IO) {
