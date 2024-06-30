@@ -15,6 +15,6 @@ class DiafitApplication : Application() {
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "db-diafit"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 }

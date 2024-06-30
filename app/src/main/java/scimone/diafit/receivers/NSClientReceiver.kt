@@ -12,6 +12,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import scimone.diafit.DiafitApplication
 import scimone.diafit.db.BolusEntity
+import scimone.diafit.db.CarbsEntity
 
 class NSClientReceiver : BroadcastReceiver() {
 
@@ -122,7 +123,7 @@ class NSClientReceiver : BroadcastReceiver() {
                 return
             }
 
-            // Process carbs entry if needed
+            insertCarbsEntry(id, timestamp, amount, eventType)
             Log.d(TAG, "Processed carbs entry: $id, $timestamp, $amount, $eventType")
         } catch (e: Exception) {
             Log.e(TAG, "Error processing carbs JSON: $jsonObject", e)
@@ -136,6 +137,17 @@ class NSClientReceiver : BroadcastReceiver() {
                 Log.d(TAG, "Inserted bolus into the database: $id, $timestamp, $amount, $eventType, $isSMB, $pumpType, $pumpSerial")
             } catch (e: Exception) {
                 Log.e(TAG, "Error inserting bolus into the database", e)
+            }
+        }
+    }
+
+    private fun insertCarbsEntry(id: String, timestamp: Long, amount: Double, eventType: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                DiafitApplication.db.carbsDao().insert(CarbsEntity(id, timestamp, amount, eventType))
+                Log.d(TAG, "Inserted carbs into the database: $id, $timestamp, $amount, $eventType")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error inserting carbs into the database", e)
             }
         }
     }
