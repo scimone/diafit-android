@@ -34,6 +34,7 @@ import com.patrykandpatrick.vico.core.common.shape.Shape
 import scimone.diafit.core.domain.model.CGMEntity
 import scimone.diafit.core.presentation.model.CGMChartData
 import scimone.diafit.features.home.presentation.components.CustomAxisItemPlacer
+import java.util.Calendar
 
 @Composable
 fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
@@ -63,10 +64,20 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
                 itemPlacer = remember { CustomAxisItemPlacer() },
             ),
             bottomAxis = rememberBottomAxis(
+
                 guideline = LineComponent(
                     color = MaterialTheme.colorScheme.onSurface.toArgb(),
                     thicknessDp = .5f,
                 ),
+                valueFormatter = { value, _, _ ->
+                    val time = value.toLong()
+                    val calendar = Calendar.getInstance().apply {
+                        timeInMillis = time
+                    }
+                    val hours = calendar.get(Calendar.HOUR_OF_DAY)
+//                    val minutes = calendar.get(Calendar.MINUTE)
+                    String.format("%02d", hours)
+                },
             ),
         ),
         modelProducer,
