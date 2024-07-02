@@ -20,7 +20,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
     Column {
-        Box(modifier = Modifier.fillMaxWidth()) {
+        Box(modifier = Modifier.fillMaxWidth().height(170.dp)) {
             ChartComponentCGM(state.allCGMFromToday)
         }
 

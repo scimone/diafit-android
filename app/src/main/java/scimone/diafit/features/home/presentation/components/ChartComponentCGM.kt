@@ -15,6 +15,7 @@ import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStartAxis
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.marker.rememberDefaultCartesianMarker
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoZoomState
@@ -25,7 +26,11 @@ import com.patrykandpatrick.vico.core.cartesian.axis.AxisPosition
 import com.patrykandpatrick.vico.core.cartesian.data.AxisValueOverrider
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
+import com.patrykandpatrick.vico.core.cartesian.marker.DefaultCartesianMarker
 import com.patrykandpatrick.vico.core.common.component.LineComponent
+import com.patrykandpatrick.vico.core.common.component.ShapeComponent
+import com.patrykandpatrick.vico.core.common.component.TextComponent
+import com.patrykandpatrick.vico.core.common.shape.Shape
 import scimone.diafit.core.domain.model.CGMEntity
 import scimone.diafit.core.presentation.model.CGMChartData
 import scimone.diafit.features.home.presentation.components.CustomAxisItemPlacer
@@ -39,9 +44,6 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
                 lineSeries {
                     val xValues = allCGMFromToday.map { it.timeFloat }
                     val yValues = allCGMFromToday.map { it.value }
-//                    println("testest allCGMFromToday: $allCGMFromToday")
-//                    println("testest xValues: $xValues")
-//                    println("testestyValues: $yValues")
                     series(x = xValues, y = yValues)
                 }
             }
@@ -50,7 +52,7 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
     CartesianChartHost(
         rememberCartesianChart(
             rememberLineCartesianLayer(
-                axisValueOverrider = AxisValueOverrider.fixed(minY = 0f, maxY = 250f),
+//                axisValueOverrider = AxisValueOverrider.fixed(minY = 0f, maxY = 250f),
                 verticalAxisPosition = AxisPosition.Vertical.Start
             ),
             startAxis = rememberStartAxis(
@@ -70,7 +72,15 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
         modelProducer,
         zoomState = rememberVicoZoomState(zoomEnabled = true, initialZoom = Zoom.Companion.Content),
         scrollState = rememberVicoScrollState(initialScroll = Scroll.Absolute.Companion.End),
-        getXStep = { 1f }
-
+        getXStep = { 1f },
+        marker = rememberDefaultCartesianMarker(
+            label = TextComponent.build {},
+            labelPosition = DefaultCartesianMarker.LabelPosition.Top,
+            indicator = ShapeComponent(
+                shape = Shape.Pill,
+                color = MaterialTheme.colorScheme.primary.toArgb(),
+            ),
+            indicatorSize = 10.dp
         )
+    )
 }
