@@ -1,4 +1,4 @@
-package scimone.diafit.core.utils
+package scimone.diafit.core.domain.utils
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,5 +13,15 @@ object DateUtils {
 
     fun timestampToTimeString(timestamp: Long): String {
         return timeFormat.format(Date(timestamp))
+    }
+
+    fun timestampToTimeFloat(timestamp: Long): Float {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = timestamp
+        }
+        val hours = calendar.get(Calendar.HOUR_OF_DAY)
+        val minutes = calendar.get(Calendar.MINUTE)
+        val seconds = calendar.get(Calendar.SECOND)
+        return hours + minutes / 60f + seconds / 3600f
     }
 }

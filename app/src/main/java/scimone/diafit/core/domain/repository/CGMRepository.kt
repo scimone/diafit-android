@@ -7,6 +7,8 @@ interface CGMRepository {
 
     fun getLatestCGM(): Flow<CGMEntity>
 
+    fun getAllCGMFromToday(startOfDay: Long): Flow<List<CGMEntity>>
+
     suspend fun insertCGMValue(cgmValue: CGMEntity)
 
 }

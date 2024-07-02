@@ -12,6 +12,9 @@ interface CGMDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCGM(cgmValue: CGMEntity)
 
+    @Query("SELECT * FROM CGMEntity WHERE timestamp >= :startOfDay ORDER BY timestamp ASC")
+    fun getAllCGMFromToday(startOfDay: Long): Flow<List<CGMEntity>>
+
     @Query("SELECT * FROM CGMEntity ORDER BY timestamp DESC LIMIT 1")
     fun getLatestCGM(): Flow<CGMEntity>
 }

@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import scimone.diafit.core.domain.use_cases.CommonUseCases
-import scimone.diafit.core.utils.DateUtils
+import scimone.diafit.core.domain.utils.DateUtils
+import scimone.diafit.core.presentation.model.CGMChartData
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -24,6 +25,7 @@ class HomeViewModel @Inject constructor(
         loadBolus()
         loadCarbs()
         loadCGM()
+        loadAllCGMFromToday()
         updateCountdown()
     }
 
@@ -63,6 +65,21 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             commonUseCases.getLatestCGMUseCase().collect { cgm ->
                 _state.value = _state.value.copy(latestCGM = cgm)
+            }
+        }
+    }
+
+
+    private fun loadAllCGMFromToday() {
+        viewModelScope.launch {
+            commonUseCases.getAllCGMFromTodayUseCase(startOfDay).collect { cgmList ->
+                val cgmChartDataList = cgmList.map { cgmEntity ->
+                    CGMChartData(
+                        timeFloat = DateUtils.timestampToTimeFloat(cgmEntity.timestamp).toFloat(),
+                        value = cgmEntity.value
+                    )
+                }
+                _state.value = _state.value.copy(allCGMFromToday = cgmChartDataList)
             }
         }
     }

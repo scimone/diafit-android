@@ -1,7 +1,7 @@
 package scimone.diafit.core.domain.services
 
 import scimone.diafit.core.domain.model.CGMEntity
-import scimone.diafit.core.utils.DateUtils
+import scimone.diafit.core.domain.utils.DateUtils
 
 class CreateCGMEntityService {
 

@@ -83,18 +83,32 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
 
 
-    dependencies {
-        implementation("com.google.dagger:hilt-android:2.51.1")
-        kapt("com.google.dagger:hilt-compiler:2.51.1")
+    // Dagger - Hilt
 
-        // For instrumentation tests
-        androidTestImplementation("com.google.dagger:hilt-android-testing:2.51.1")
-        kaptAndroidTest("com.google.dagger:hilt-compiler:2.51.1")
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-compiler:2.51.1")
 
-        // For local unit tests
-        testImplementation("com.google.dagger:hilt-android-testing:2.51.1")
-        kaptTest("com.google.dagger:hilt-compiler:2.51.1")
-    }
+    // For instrumentation tests
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.51.1")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:2.51.1")
 
+    // For local unit tests
+    testImplementation("com.google.dagger:hilt-android-testing:2.51.1")
+    kaptTest("com.google.dagger:hilt-compiler:2.51.1")
+
+
+    // Vico Charts
+    val vicoVersion = "2.0.0-alpha.21"
+    // For Jetpack Compose.
+    implementation("com.patrykandpatrick.vico:compose:$vicoVersion")
+
+    // For `compose`. Creates a `ChartStyle` based on an M2 Material Theme.
+    implementation("com.patrykandpatrick.vico:compose-m2:$vicoVersion")
+
+    // For `compose`. Creates a `ChartStyle` based on an M3 Material Theme.
+    implementation("com.patrykandpatrick.vico:compose-m3:$vicoVersion")
+
+    // Houses the core logic for charts and other elements. Included in all other modules.
+    implementation("com.patrykandpatrick.vico:core:$vicoVersion")
 
 }

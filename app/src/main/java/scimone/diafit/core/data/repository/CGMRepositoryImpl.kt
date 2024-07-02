@@ -13,6 +13,10 @@ class CGMRepositoryImpl(
         return cgmDao.getLatestCGM()
     }
 
+    override fun getAllCGMFromToday(startOfDay: Long): Flow<List<CGMEntity>> {
+        return cgmDao.getAllCGMFromToday(startOfDay)
+    }
+
     override suspend fun insertCGMValue(cgmValue: CGMEntity) {
         cgmDao.insertCGM(cgmValue)
     }

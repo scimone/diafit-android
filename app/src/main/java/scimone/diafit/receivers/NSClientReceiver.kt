@@ -14,7 +14,7 @@ import org.json.JSONObject
 import scimone.diafit.core.domain.model.BolusEntity
 import scimone.diafit.core.domain.model.CarbsEntity
 import scimone.diafit.core.domain.use_cases.CommonUseCases
-import scimone.diafit.core.utils.DateUtils
+import scimone.diafit.core.domain.utils.DateUtils
 import javax.inject.Inject
 
 @AndroidEntryPoint
