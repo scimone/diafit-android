@@ -72,7 +72,7 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
         modelProducer,
         zoomState = rememberVicoZoomState(zoomEnabled = true, initialZoom = Zoom.Companion.Content),
         scrollState = rememberVicoScrollState(initialScroll = Scroll.Absolute.Companion.End),
-        getXStep = { 1f },
+        getXStep = { 3600000f },
         marker = rememberDefaultCartesianMarker(
             label = TextComponent.build {},
             labelPosition = DefaultCartesianMarker.LabelPosition.Top,

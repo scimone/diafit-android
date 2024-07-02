@@ -21,7 +21,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
     Column {
         Box(modifier = Modifier.fillMaxWidth().height(170.dp)) {
-            ChartComponentCGM(state.allCGMFromToday)
+            ChartComponentCGM(state.allCGMSince24h)
         }
 
         state.latestCGM?.let { cgm ->

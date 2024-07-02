@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
         loadBolus()
         loadCarbs()
         loadCGM()
-        loadAllCGMFromToday()
+        loadAllCGMSince24h()
         updateCountdown()
     }
 
@@ -36,6 +36,13 @@ class HomeViewModel @Inject constructor(
             calendar.set(Calendar.MINUTE, 0)
             calendar.set(Calendar.SECOND, 0)
             calendar.set(Calendar.MILLISECOND, 0)
+            return calendar.timeInMillis
+        }
+
+    private val nowMinus24h: Long
+        get() {
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.HOUR_OF_DAY, -24) // Subtract 24 hours from the current time
             return calendar.timeInMillis
         }
 
@@ -70,16 +77,16 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun loadAllCGMFromToday() {
+    private fun loadAllCGMSince24h() {
         viewModelScope.launch {
-            commonUseCases.getAllCGMFromTodayUseCase(startOfDay).collect { cgmList ->
+            commonUseCases.getAllCGMSinceUseCase(nowMinus24h).collect { cgmList ->
                 val cgmChartDataList = cgmList.map { cgmEntity ->
                     CGMChartData(
-                        timeFloat = DateUtils.timestampToTimeFloat(cgmEntity.timestamp).toFloat(),
+                        timeFloat = cgmEntity.timestamp.toFloat(),
                         value = cgmEntity.value
                     )
                 }
-                _state.value = _state.value.copy(allCGMFromToday = cgmChartDataList)
+                _state.value = _state.value.copy(allCGMSince24h = cgmChartDataList)
             }
         }
     }
