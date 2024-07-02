@@ -1,15 +1,17 @@
-package scimone.diafit.db
-import androidx.lifecycle.LiveData
+package scimone.diafit.core.data.local
+
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
+import scimone.diafit.core.domain.model.CGMEntity
 
 @Dao
 interface CGMDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(cgmValue: CGMEntity)
+    fun insertCGM(cgmValue: CGMEntity)
 
     @Query("SELECT * FROM CGMEntity ORDER BY timestamp DESC LIMIT 1")
-    fun getLatest(): LiveData<CGMEntity>
+    fun getLatestCGM(): Flow<CGMEntity>
 }

@@ -5,16 +5,23 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
-import scimone.diafit.DiafitApplication
-import scimone.diafit.db.BolusEntity
-import scimone.diafit.db.CarbsEntity
+import scimone.diafit.core.domain.model.BolusEntity
+import scimone.diafit.core.domain.model.CarbsEntity
+import scimone.diafit.core.domain.use_cases.CommonUseCases
+import scimone.diafit.core.utils.DateUtils
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class NSClientReceiver : BroadcastReceiver() {
+
+    @Inject
+    lateinit var commonUseCases: CommonUseCases
 
     companion object {
         private const val TAG = "NSClientReceiver"
@@ -115,7 +122,7 @@ class NSClientReceiver : BroadcastReceiver() {
         try {
             val id = jsonObject.getString("_id")
             val timestamp = jsonObject.optLong("date")
-            val amount = jsonObject.optDouble("carbs")
+            val amount = jsonObject.optDouble("carbs").toInt()
             val eventType = jsonObject.optString("eventType")
 
             if (timestamp == null || amount == null || eventType.isNullOrEmpty()) {
@@ -133,7 +140,16 @@ class NSClientReceiver : BroadcastReceiver() {
     private fun insertBolusEntry(id: String, timestamp: Long, amount: Double, eventType: String, isSMB: Boolean, pumpType: String, pumpSerial: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                DiafitApplication.db.bolusDao().insert(BolusEntity(id, timestamp, amount, eventType, isSMB, pumpType, pumpSerial))
+                val bolusEntity = BolusEntity(
+                    id=id,
+                    timestamp=timestamp,
+                    timestampString = DateUtils.timestampToDateTimeString(timestamp),
+                    amount=amount,
+                    eventType = eventType,
+                    isSMB=isSMB,
+                    pumpType=pumpType,
+                    pumpSerial=pumpSerial)
+                commonUseCases.insertBolusValueUseCase(bolusEntity)
                 Log.d(TAG, "Inserted bolus into the database: $id, $timestamp, $amount, $eventType, $isSMB, $pumpType, $pumpSerial")
             } catch (e: Exception) {
                 Log.e(TAG, "Error inserting bolus into the database", e)
@@ -141,10 +157,17 @@ class NSClientReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun insertCarbsEntry(id: String, timestamp: Long, amount: Double, eventType: String) {
+    private fun insertCarbsEntry(id: String, timestamp: Long, amount: Int, eventType: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                DiafitApplication.db.carbsDao().insert(CarbsEntity(id, timestamp, amount, eventType))
+                val carbsEntity = CarbsEntity(
+                    id=id,
+                    timestamp=timestamp,
+                    timestampString = DateUtils.timestampToDateTimeString(timestamp),
+                    amount=amount,
+                    eventType=eventType
+                )
+                commonUseCases.insertCarbsValueUseCase(carbsEntity)
                 Log.d(TAG, "Inserted carbs into the database: $id, $timestamp, $amount, $eventType")
             } catch (e: Exception) {
                 Log.e(TAG, "Error inserting carbs into the database", e)

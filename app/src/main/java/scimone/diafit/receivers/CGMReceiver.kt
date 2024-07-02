@@ -4,13 +4,21 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import scimone.diafit.DiafitApplication
-import scimone.diafit.db.CGMEntity
+import scimone.diafit.core.domain.services.CreateCGMEntityService
+import scimone.diafit.core.domain.use_cases.CommonUseCases
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CGMReceiver : BroadcastReceiver() {
+
+    @Inject
+    lateinit var commonUseCases: CommonUseCases
+    @Inject
+    lateinit var createCgmEntityService: CreateCGMEntityService
 
     companion object {
         private const val TAG = "CGMReceiver"
@@ -32,27 +40,17 @@ class CGMReceiver : BroadcastReceiver() {
         val rate = intent.getFloatExtra(RATE, 0f)
         val timestamp = intent.getLongExtra(TIMESTAMP, 0)
 
-        val cgmString = "$cgmValue mg/dL, rate: $rate mg/dL/min, trend: ${getDexcomTrend(rate)}"
-        Log.i(TAG, "Received new CGM value: $cgmString")
+        Log.i(TAG, "Received new CGM value: $cgmValue")
 
         // Insert CGM value into the database
-        insertCGMValue(timestamp, cgmValue)
+        insertCGMValue(timestamp, cgmValue, rate)
     }
 
-    private fun insertCGMValue(timestamp: Long, cgmValue: Int) {
+    private fun insertCGMValue(timestamp: Long, cgmValue: Int, rate: Float) {
+        val cgmEntity = createCgmEntityService.createCGMEntity(timestamp, cgmValue, rate)
         CoroutineScope(Dispatchers.IO).launch {
-            DiafitApplication.db.cgmDao().insert(CGMEntity(timestamp, cgmValue))
-            Log.d(TAG, "Inserted CGM value into the database: $cgmValue at $timestamp")
+            commonUseCases.insertCGMValueUseCase(cgmEntity)
+            Log.d(TAG, "Inserted CGM value into the database: ${cgmEntity.value} at ${cgmEntity.timestampString}")
         }
-    }
-
-    private fun getDexcomTrend(rate: Float): String {
-        if (rate >= 3.5f) return "DoubleUp"
-        if (rate >= 2.0f) return "SingleUp"
-        if (rate >= 1.0f) return "FortyFiveUp"
-        if (rate > -1.0f) return "Flat"
-        if (rate > -2.0f) return "FortyFiveDown"
-        if (rate > -3.5f) return "SingleDown"
-        return if (java.lang.Float.isNaN(rate)) "" else "DoubleDown"
     }
 }

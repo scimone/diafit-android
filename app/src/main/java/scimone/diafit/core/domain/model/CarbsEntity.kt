@@ -1,4 +1,4 @@
-package scimone.diafit.db
+package scimone.diafit.core.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class CarbsEntity(
     @PrimaryKey(autoGenerate = false) val id: String,
     val timestamp: Long,
-    val amount: Double,
+    val timestampString: String = "",
+    val amount: Int,
     val eventType: String
 )
