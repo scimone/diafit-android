@@ -1,32 +1,49 @@
 package scimone.diafit.features.home.presentation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import scimone.diafit.components.ChartComponentCGM
+import scimone.diafit.features.home.presentation.components.ComponentRotatingArrowIcon
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    Column {
-        Box(modifier = Modifier.fillMaxWidth().height(170.dp)) {
-            ChartComponentCGM(state.allCGMSince24h)
-        }
 
+    Column {
         state.latestCGM?.let { cgm ->
-            Text(text = "${cgm.value} mg/dL, ${state.timeSinceLastCGM} seconds ago")
+            // Clamp cgm.rate to [-4, 4] and normalize to [0, 1]
+            val normalizedRate = ((cgm.rate.coerceIn(-4f, 4f) + 4) / 8)
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+            )
+            {
+                Text(
+                    text = "${cgm.value}",
+                    fontSize = 32.sp, // Adjust text size here
+                    fontWeight = FontWeight.Bold, // Adjust font weight here
+                )
+                ComponentRotatingArrowIcon(inputValue = normalizedRate)
+            }
+            Text(text = "${state.timeSinceLastCGM} seconds ago")
             Text(text = "(Rate: ${cgm.rate} mg/dL, Trend: ${cgm.trend})")
+
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(170.dp)
+        ) {
+            ChartComponentCGM(state.allCGMSince24h)
         }
 
         Spacer(modifier = Modifier.height(16.dp))

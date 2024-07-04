@@ -1,5 +1,6 @@
 package scimone.diafit.features.home.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,8 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import scimone.diafit.core.domain.use_cases.CommonUseCases
-import scimone.diafit.core.domain.utils.DateUtils
+import scimone.diafit.core.utils.DateUtils
 import scimone.diafit.core.presentation.model.CGMChartData
+import scimone.diafit.core.utils.DateUtils.timestampToDateTimeString
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -36,6 +38,8 @@ class HomeViewModel @Inject constructor(
             calendar.set(Calendar.MINUTE, 0)
             calendar.set(Calendar.SECOND, 0)
             calendar.set(Calendar.MILLISECOND, 0)
+            // log time string
+            Log.d("HomeViewModel", "startOfDay: ${timestampToDateTimeString(calendar.timeInMillis)}")
             return calendar.timeInMillis
         }
 
@@ -43,6 +47,7 @@ class HomeViewModel @Inject constructor(
         get() {
             val calendar = Calendar.getInstance()
             calendar.add(Calendar.HOUR_OF_DAY, -24) // Subtract 24 hours from the current time
+            Log.d("HomeViewModel", "nowMinus24h: ${timestampToDateTimeString(calendar.timeInMillis)}")
             return calendar.timeInMillis
         }
 
@@ -64,6 +69,7 @@ class HomeViewModel @Inject constructor(
                     carbs.copy(timestampString = DateUtils.timestampToTimeString(carbs.timestamp))
                 }
                 _state.value = _state.value.copy(allCarbsFromToday = carbsWithDateTime)
+                Log.d("HomeViewModel", "allCarbsFromToday: $carbsList")
             }
         }
     }

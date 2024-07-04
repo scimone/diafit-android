@@ -1,5 +1,6 @@
 package scimone.diafit.components
 
+import android.text.Layout
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +31,7 @@ import com.patrykandpatrick.vico.core.cartesian.marker.DefaultCartesianMarker
 import com.patrykandpatrick.vico.core.common.component.LineComponent
 import com.patrykandpatrick.vico.core.common.component.ShapeComponent
 import com.patrykandpatrick.vico.core.common.component.TextComponent
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLabelComponent
 import com.patrykandpatrick.vico.core.common.shape.Shape
 import scimone.diafit.core.domain.model.CGMEntity
 import scimone.diafit.core.presentation.model.CGMChartData
@@ -64,10 +66,12 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
                 itemPlacer = remember { CustomAxisItemPlacer() },
             ),
             bottomAxis = rememberBottomAxis(
-
                 guideline = LineComponent(
                     color = MaterialTheme.colorScheme.onSurface.toArgb(),
                     thicknessDp = .5f,
+                ),
+                label = rememberAxisLabelComponent(
+                    textAlignment = Layout.Alignment.ALIGN_CENTER,
                 ),
                 valueFormatter = { value, _, _ ->
                     val time = value.toLong()

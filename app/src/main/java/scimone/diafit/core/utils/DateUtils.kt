@@ -1,4 +1,4 @@
-package scimone.diafit.core.domain.utils
+package scimone.diafit.core.utils
 
 import java.text.SimpleDateFormat
 import java.util.*
