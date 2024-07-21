@@ -7,7 +7,7 @@ import scimone.diafit.core.domain.repository.CGMRepository
 class Get5MinCGMRateAvgUseCase (
     private val repository: CGMRepository
     ) {
-        suspend operator fun invoke(): Flow<Float> {
+        suspend operator fun invoke(): Flow<Float?> {
             return repository.get5MinCGMRateAvg()
         }
     }

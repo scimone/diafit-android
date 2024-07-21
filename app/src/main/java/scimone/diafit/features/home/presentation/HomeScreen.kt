@@ -32,7 +32,9 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 textDecoration = if (state.staleCGM) TextDecoration.LineThrough else TextDecoration.None
 
             )
-            ComponentRotatingArrowIcon(inputValue = state.rateAvg)
+            state.rateAvg?.let {
+                ComponentRotatingArrowIcon(inputValue = it)
+            }
         }
         Text(text = "${state.timeSinceLastCGM} ago")
 

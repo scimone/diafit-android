@@ -86,8 +86,10 @@ class HomeViewModel @Inject constructor(
     private fun load5MinCGMRateAvg() {
         viewModelScope.launch {
             commonUseCases.get5MinCGMRateAvgUseCase().collect { rateAvg ->
-                // Clamp the rate to [-4, 4] and normalize to [0, 1]
-                val normalizedRate = ((rateAvg.coerceIn(-4f, 4f) + 4) / 8)
+                val normalizedRate = rateAvg?.let {
+                    // Clamp the rate to [-4, 4] and normalize to [0, 1]
+                    ((it.coerceIn(-4f, 4f) + 4) / 8)
+                }
                 _state.value = _state.value.copy(rateAvg = normalizedRate)
             }
         }

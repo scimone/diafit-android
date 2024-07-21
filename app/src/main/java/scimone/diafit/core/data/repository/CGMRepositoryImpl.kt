@@ -13,7 +13,7 @@ class CGMRepositoryImpl(
         return cgmDao.getLatestCGM()
     }
 
-    override fun get5MinCGMRateAvg(): Flow<Float> {
+    override fun get5MinCGMRateAvg(): Flow<Float?> {
         val currentTime = System.currentTimeMillis()
         val fiveMinutesAgo = currentTime - 300000
         return cgmDao.get5MinCGMRateAvg(fiveMinutesAgo, currentTime)
