@@ -21,26 +21,21 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
 
     Column {
-        state.latestCGM?.let { cgm ->
-            // Clamp cgm.rate to [-4, 4] and normalize to [0, 1]
-            val normalizedRate = ((cgm.rate.coerceIn(-4f, 4f) + 4) / 8)
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+        )
+        {
+            Text(
+                text = "${state.latestCGM?.value}",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                textDecoration = if (state.staleCGM) TextDecoration.LineThrough else TextDecoration.None
+
             )
-            {
-                Text(
-                    text = "${cgm.value}",
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    textDecoration = if (state.staleCGM) TextDecoration.LineThrough else TextDecoration.None
-
-                )
-                ComponentRotatingArrowIcon(inputValue = normalizedRate)
-            }
-            Text(text = "${state.timeSinceLastCGM} ago")
-            Text(text = "(Rate: ${cgm.rate} mg/dL/min)")
-
+            ComponentRotatingArrowIcon(inputValue = state.rateAvg)
         }
+        Text(text = "${state.timeSinceLastCGM} ago")
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()

@@ -7,5 +7,6 @@ data class CommonUseCases (
     val getAllCGMSinceUseCase: GetAllCGMSinceUseCase,
     val getAllBolusFromTodayUseCase: GetAllBolusFromTodayUseCase,
     val getAllCarbsFromTodayUseCase: GetAllCarbsFromTodayUseCase,
-    val getLatestCGMUseCase: GetLatestCGMUseCase
+    val getLatestCGMUseCase: GetLatestCGMUseCase,
+    val get5MinCGMRateAvgUseCase: Get5MinCGMRateAvgUseCase,
 )

@@ -10,6 +10,7 @@ data class HomeState(
     val allCarbsFromToday: List<CarbsEntity> = emptyList(),
     val allCGMSince24h: List<CGMChartData> = emptyList(),
     val latestCGM: CGMEntity? = null,
+    val rateAvg: Float = 0f,
     val timeSinceLastCGM: String = "",
     val staleCGM: Boolean = false,
 )
