@@ -38,7 +38,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 ComponentRotatingArrowIcon(inputValue = normalizedRate)
             }
             Text(text = "${state.timeSinceLastCGM} ago")
-            Text(text = "(Rate: ${cgm.rate} mg/dL, Trend: ${cgm.trend})")
+            Text(text = "(Rate: ${cgm.rate} mg/dL/min)")
 
         }
         Box(

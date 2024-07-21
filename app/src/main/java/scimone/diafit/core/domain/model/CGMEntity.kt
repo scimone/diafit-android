@@ -12,6 +12,5 @@ data class CGMEntity(
     val timestampString: String = "",
     val value: Int,
     val rate: Float,
-    val trend: String,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 )
