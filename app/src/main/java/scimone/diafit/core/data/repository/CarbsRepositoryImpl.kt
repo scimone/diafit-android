@@ -16,4 +16,8 @@ class CarbsRepositoryImpl(
     override fun getAllCarbsFromToday(startOfDay: Long): Flow<List<CarbsEntity>> {
         return carbsDao.getAllCarbsFromToday(startOfDay)
     }
+
+    override fun getAllCarbsSince(start: Long): Flow<List<CarbsEntity>> {
+        return carbsDao.getAllCarbsSince(start)
+    }
 }

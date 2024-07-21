@@ -9,4 +9,6 @@ interface BolusRepository {
 
     fun getAllBolusFromToday(startOfDay: Long): Flow<List<BolusEntity>>
 
+    fun getAllBolusSince(start: Long): Flow<List<BolusEntity>>
+
 }

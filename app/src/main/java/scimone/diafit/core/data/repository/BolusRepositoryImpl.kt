@@ -15,4 +15,7 @@ class BolusRepositoryImpl(
     override fun getAllBolusFromToday(startOfDay: Long): Flow<List<BolusEntity>> {
         return bolusDao.getAllBolusFromToday(startOfDay)
     }
+    override fun getAllBolusSince(start: Long): Flow<List<BolusEntity>> {
+        return bolusDao.getAllBolusSince(start)
+    }
 }

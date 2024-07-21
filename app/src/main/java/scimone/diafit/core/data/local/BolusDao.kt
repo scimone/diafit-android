@@ -15,4 +15,8 @@ interface BolusDao {
     // get all entries from today, ordered by timestamp descending
     @Query("SELECT * FROM BolusEntity WHERE timestamp >= :startOfDay ORDER BY timestamp DESC")
     fun getAllBolusFromToday(startOfDay: Long): Flow<List<BolusEntity>>
+
+    // get all entries since defined timestamp, ordered by timestamp ascending
+    @Query("SELECT * FROM BolusEntity WHERE timestamp >= :start ORDER BY timestamp ASC")
+    fun getAllBolusSince(start: Long): Flow<List<BolusEntity>>
 }

@@ -49,14 +49,14 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
         Row {
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = "Today's Bolus:")
-                state.allBolusFromToday.forEach { bolus ->
+                state.allBolus24h.forEach { bolus ->
                     Text(text = "${bolus.timestampString} ${bolus.amount} U")
                 }
             }
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = "Today's Carbs:")
-                state.allCarbsFromToday.forEach { carbs ->
+                state.allCarbs24h.forEach { carbs ->
                     Text(text = "${carbs.timestampString} ${carbs.amount} g")
                 }
             }

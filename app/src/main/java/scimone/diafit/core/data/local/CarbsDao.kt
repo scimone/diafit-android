@@ -16,4 +16,8 @@ interface CarbsDao {
 
     @Query("SELECT * FROM CarbsEntity WHERE timestamp >= :startOfDay ORDER BY timestamp DESC")
     fun getAllCarbsFromToday(startOfDay: Long): Flow<List<CarbsEntity>>
+
+    // get all entries since the defined timestamp, ordered by timestamp ascending
+    @Query("SELECT * FROM CarbsEntity WHERE timestamp >= :start ORDER BY timestamp ASC")
+    fun getAllCarbsSince(start: Long): Flow<List<CarbsEntity>>
 }

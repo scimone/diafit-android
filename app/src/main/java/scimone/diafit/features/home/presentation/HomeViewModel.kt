@@ -54,23 +54,23 @@ class HomeViewModel @Inject constructor(
 
     private fun loadBolus() {
         viewModelScope.launch {
-            commonUseCases.getAllBolusFromTodayUseCase(startOfDay).collect { bolusList ->
+            commonUseCases.getAllBolusSinceUseCase(nowMinus24h).collect { bolusList ->
                 val bolusWithDateTime = bolusList.map { bolus ->
                     bolus.copy(timestampString = DateUtils.timestampToTimeString(bolus.timestamp))
                 }
-                _state.value = _state.value.copy(allBolusFromToday = bolusWithDateTime)
+                _state.value = _state.value.copy(allBolus24h = bolusWithDateTime)
             }
         }
     }
 
     private fun loadCarbs() {
         viewModelScope.launch {
-            commonUseCases.getAllCarbsFromTodayUseCase(startOfDay).collect { carbsList ->
+            commonUseCases.getAllCarbsSinceUseCase(nowMinus24h).collect { carbsList ->
                 val carbsWithDateTime = carbsList.map { carbs ->
                     carbs.copy(timestampString = DateUtils.timestampToTimeString(carbs.timestamp))
                 }
-                _state.value = _state.value.copy(allCarbsFromToday = carbsWithDateTime)
-                Log.d("HomeViewModel", "allCarbsFromToday: $carbsList")
+                _state.value = _state.value.copy(allCarbs24h = carbsWithDateTime)
+                Log.d("HomeViewModel", "allCarbs24h: $carbsList")
             }
         }
     }

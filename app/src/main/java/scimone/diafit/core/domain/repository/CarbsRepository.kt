@@ -9,4 +9,6 @@ interface CarbsRepository {
 
     fun getAllCarbsFromToday(startOfDay: Long): Flow<List<CarbsEntity>>
 
+    fun getAllCarbsSince(start: Long): Flow<List<CarbsEntity>>
+
 }
