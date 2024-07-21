@@ -102,7 +102,19 @@ class HomeViewModel @Inject constructor(
             while (true) {
                 state.value.latestCGM?.let { cgm ->
                     val duration = System.currentTimeMillis() - cgm.timestamp
-                    _state.value = _state.value.copy(timeSinceLastCGM = duration.toInt() / 1000)
+                    val totalSeconds = duration / 1000
+                    val hours = totalSeconds / 3600
+                    val minutes = (totalSeconds % 3600) / 60
+                    val seconds = totalSeconds % 60
+
+                    val formattedTime = buildString {
+                        if (hours > 0) append("${hours}h ")
+                        if (minutes > 0 || hours > 0) append("${minutes}m ")
+                        append("${seconds}s")
+                    }
+
+                    // Update the state with the new formatted time string
+                    _state.value = _state.value.copy(timeSinceLastCGM = formattedTime)
                 }
                 delay(1000)
             }

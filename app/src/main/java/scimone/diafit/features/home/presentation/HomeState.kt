@@ -10,5 +10,5 @@ data class HomeState(
     val allCarbsFromToday: List<CarbsEntity> = emptyList(),
     val allCGMSince24h: List<CGMChartData> = emptyList(),
     val latestCGM: CGMEntity? = null,
-    val timeSinceLastCGM: Int = 0
+    val timeSinceLastCGM: String = "",
 )

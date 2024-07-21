@@ -6,7 +6,7 @@ import scimone.diafit.core.domain.repository.CGMRepository
 class GetAllCGMSinceUseCase (
     private val repository: CGMRepository
 ) {
-    suspend operator fun invoke(startOfDay: Long): Flow<List<CGMEntity>> {
-        return repository.getAllCGMSince(startOfDay)
+    suspend operator fun invoke(startTime: Long): Flow<List<CGMEntity>> {
+        return repository.getAllCGMSince(startTime)
     }
 }
