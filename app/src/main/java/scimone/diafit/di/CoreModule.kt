@@ -13,7 +13,6 @@ import scimone.diafit.core.data.repository.CarbsRepositoryImpl
 import scimone.diafit.core.domain.repository.BolusRepository
 import scimone.diafit.core.domain.repository.CGMRepository
 import scimone.diafit.core.domain.repository.CarbsRepository
-import scimone.diafit.core.domain.services.CreateCGMEntityService
 import scimone.diafit.core.domain.use_cases.CommonUseCases
 import scimone.diafit.core.domain.use_cases.Get5MinCGMRateAvgUseCase
 import scimone.diafit.core.domain.use_cases.GetAllBolusFromTodayUseCase
@@ -73,11 +72,5 @@ object CoreModule {
             getAllCarbsFromTodayUseCase = GetAllCarbsFromTodayUseCase(carbsRepository),
             get5MinCGMRateAvgUseCase = Get5MinCGMRateAvgUseCase(cgmRepository)
         )
-    }
-
-    @Provides
-    @Singleton
-    fun provideCGMEntityService(): CreateCGMEntityService {
-        return CreateCGMEntityService()
     }
 }

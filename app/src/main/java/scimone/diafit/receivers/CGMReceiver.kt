@@ -8,8 +8,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import scimone.diafit.core.domain.services.CreateCGMEntityService
+import scimone.diafit.core.domain.model.CGMEntity
 import scimone.diafit.core.domain.use_cases.CommonUseCases
+import scimone.diafit.core.utils.DateUtils
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -17,8 +18,6 @@ class CGMReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var commonUseCases: CommonUseCases
-    @Inject
-    lateinit var createCgmEntityService: CreateCGMEntityService
 
     companion object {
         private const val TAG = "CGMReceiver"
@@ -47,7 +46,12 @@ class CGMReceiver : BroadcastReceiver() {
     }
 
     private fun insertCGMValue(timestamp: Long, cgmValue: Int, rate: Float) {
-        val cgmEntity = createCgmEntityService.createCGMEntity(timestamp, cgmValue, rate)
+        val cgmEntity = CGMEntity(
+            timestamp=timestamp,
+            timestampString = DateUtils.timestampToDateTimeString(timestamp),
+            value=cgmValue,
+            rate=rate,
+        )
         CoroutineScope(Dispatchers.IO).launch {
             commonUseCases.insertCGMValueUseCase(cgmEntity)
             Log.d(TAG, "Inserted CGM value into the database: ${cgmEntity.value} at ${cgmEntity.timestampString}")
