@@ -7,9 +7,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.dp
 
 
@@ -30,7 +35,7 @@ fun DrawScope.drawArrow() {
     val center = size.minDimension / 2f
     val radius = center - 10.dp.toPx()
     val arrowColor = Color.White
-    val arrowStrokeWidth = 3.dp.toPx()
+    val arrowStrokeWidth = 2.5.dp.toPx()
 
     // Draw outlined circle
     drawCircle(
@@ -77,8 +82,13 @@ fun DrawScope.drawArrowhead(position: Offset, color: Color, radius: Float) {
         close()
     }
 
-    drawPath(
-        path = path,
-        color = color
-    )
+    drawIntoCanvas { canvas ->
+        canvas.drawOutline(
+            outline = Outline.Generic(path),
+            paint = Paint().apply {
+                this.color = color
+                pathEffect = PathEffect.cornerPathEffect(radius * 0.1f) // Use a fraction of the radius for corner rounding
+            }
+        )
+    }
 }
