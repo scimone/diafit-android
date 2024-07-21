@@ -11,4 +11,5 @@ data class HomeState(
     val allCGMSince24h: List<CGMChartData> = emptyList(),
     val latestCGM: CGMEntity? = null,
     val timeSinceLastCGM: String = "",
+    val staleCGM: Boolean = false,
 )

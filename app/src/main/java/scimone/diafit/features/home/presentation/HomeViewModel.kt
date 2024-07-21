@@ -106,6 +106,7 @@ class HomeViewModel @Inject constructor(
                     val hours = totalSeconds / 3600
                     val minutes = (totalSeconds % 3600) / 60
                     val seconds = totalSeconds % 60
+                    val isStaleCGM = minutes > 10
 
                     val formattedTime = buildString {
                         if (hours > 0) append("${hours}h ")
@@ -114,7 +115,7 @@ class HomeViewModel @Inject constructor(
                     }
 
                     // Update the state with the new formatted time string
-                    _state.value = _state.value.copy(timeSinceLastCGM = formattedTime)
+                    _state.value = _state.value.copy(staleCGM = isStaleCGM, timeSinceLastCGM = formattedTime)
                 }
                 delay(1000)
             }

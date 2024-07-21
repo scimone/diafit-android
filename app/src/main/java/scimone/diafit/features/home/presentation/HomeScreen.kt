@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,8 +30,10 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             {
                 Text(
                     text = "${cgm.value}",
-                    fontSize = 32.sp, // Adjust text size here
-                    fontWeight = FontWeight.Bold, // Adjust font weight here
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    textDecoration = if (state.staleCGM) TextDecoration.LineThrough else TextDecoration.None
+
                 )
                 ComponentRotatingArrowIcon(inputValue = normalizedRate)
             }
