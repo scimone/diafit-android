@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import scimone.diafit.components.ChartComponentCGM
 import scimone.diafit.features.home.presentation.components.ComponentRotatingArrowIcon
+import scimone.diafit.ui.theme.TextWhite
 import scimone.diafit.ui.theme.aboveRange
 import scimone.diafit.ui.theme.belowRange
-import scimone.diafit.ui.theme.inRange
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
@@ -35,7 +35,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 color = when {
                     (state.latestCGM?.value ?: 0) <= 70 -> belowRange
                     (state.latestCGM?.value ?: 0) >= 180 -> aboveRange
-                    else -> inRange
+                    else -> TextWhite
                 },
                 textDecoration = if (state.staleCGM) TextDecoration.LineThrough else TextDecoration.None
 

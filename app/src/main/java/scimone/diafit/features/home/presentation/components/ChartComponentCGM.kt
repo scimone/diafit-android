@@ -20,6 +20,7 @@ import com.patrykandpatrick.vico.compose.cartesian.rememberVicoZoomState
 import com.patrykandpatrick.vico.core.cartesian.Scroll
 import com.patrykandpatrick.vico.core.cartesian.Zoom
 import com.patrykandpatrick.vico.core.cartesian.axis.AxisPosition
+import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.AxisValueOverrider
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
@@ -61,6 +62,7 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
             )
             ),
             startAxis = rememberStartAxis(
+                horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
                 guideline = LineComponent(
                     color = MaterialTheme.colorScheme.onSurface.toArgb(),
                     thicknessDp = .5f,
