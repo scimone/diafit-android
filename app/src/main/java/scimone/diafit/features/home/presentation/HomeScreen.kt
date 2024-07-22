@@ -14,6 +14,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import scimone.diafit.components.ChartComponentCGM
 import scimone.diafit.features.home.presentation.components.ComponentRotatingArrowIcon
+import scimone.diafit.ui.theme.aboveRange
+import scimone.diafit.ui.theme.belowRange
+import scimone.diafit.ui.theme.inRange
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
@@ -29,12 +32,15 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 text = "${state.latestCGM?.value}",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
+                color = when {
+                    (state.latestCGM?.value ?: 0) <= 70 -> belowRange
+                    (state.latestCGM?.value ?: 0) >= 180 -> aboveRange
+                    else -> inRange
+                },
                 textDecoration = if (state.staleCGM) TextDecoration.LineThrough else TextDecoration.None
 
             )
-            state.rateAvg?.let {
-                ComponentRotatingArrowIcon(inputValue = it)
-            }
+            ComponentRotatingArrowIcon(inputValue = state.rateAvg)
         }
         Text(text = "${state.timeSinceLastCGM} ago")
 

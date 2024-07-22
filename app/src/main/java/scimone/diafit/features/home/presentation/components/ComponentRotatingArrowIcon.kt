@@ -19,27 +19,28 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun ComponentRotatingArrowIcon(inputValue: Float) {
-    val rotationAngle = (-inputValue * 180f) // Scale inputValue to [0, 180] range
+fun ComponentRotatingArrowIcon(inputValue: Float?) {
+    if (inputValue != null) {
+        val rotationAngle = (-inputValue * 180f) // Scale inputValue to [0, 180] range
 
-    Canvas(
-        modifier = Modifier
-            .size(50.dp)
-            .rotate(rotationAngle)
-    ) {
-        drawArrow()
+        Canvas(
+            modifier = Modifier
+                .size(50.dp)
+                .rotate(rotationAngle)
+        ) {
+                drawArrow(color = Color.White)
+        }
     }
 }
 
-fun DrawScope.drawArrow() {
+fun DrawScope.drawArrow(color: Color) {
     val center = size.minDimension / 2f
     val radius = center - 10.dp.toPx()
-    val arrowColor = Color.White
     val arrowStrokeWidth = 2.5.dp.toPx()
 
     // Draw outlined circle
     drawCircle(
-        color = arrowColor,
+        color = color,
         radius = radius,
         center = Offset(center, center),
         style = Stroke(width = arrowStrokeWidth)
@@ -55,14 +56,14 @@ fun DrawScope.drawArrow() {
     val arrowEndY = center - arrowLength / 2
 
     drawLine(
-        color = arrowColor,
+        color = color,
         start = Offset(arrowStartX, arrowStartY - radius * 0.25f),
         end = Offset(arrowEndX, arrowEndY),
         strokeWidth = arrowStrokeWidth
     )
 
     // Draw arrowhead (triangle)
-    drawArrowhead(Offset(arrowStartX, arrowStartY), arrowColor, radius)
+    drawArrowhead(Offset(arrowStartX, arrowStartY), color, radius)
 }
 
 fun DrawScope.drawArrowhead(position: Offset, color: Color, radius: Float) {
