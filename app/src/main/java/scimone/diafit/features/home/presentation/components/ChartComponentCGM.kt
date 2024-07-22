@@ -13,6 +13,7 @@ import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLabelCompone
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStartAxis
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineSpec
 import com.patrykandpatrick.vico.compose.cartesian.marker.rememberDefaultCartesianMarker
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
@@ -31,6 +32,8 @@ import com.patrykandpatrick.vico.core.common.component.TextComponent
 import com.patrykandpatrick.vico.core.common.shape.Shape
 import scimone.diafit.core.presentation.model.CGMChartData
 import scimone.diafit.features.home.presentation.components.CustomAxisItemPlacer
+import scimone.diafit.ui.theme.aboveRange
+import scimone.diafit.ui.theme.belowRange
 import java.util.Calendar
 
 @Composable
@@ -43,7 +46,8 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
         if (allCGMFromToday.isNotEmpty()) {
             modelProducer.tryRunTransaction {
                 lineSeries {
-                    val filteredCGMData = allCGMFromToday.filter { it.timeFloat >= oneDayAgo && it.timeFloat <= currentTime }
+                    val filteredCGMData =
+                        allCGMFromToday.filter { it.timeFloat >= oneDayAgo && it.timeFloat <= currentTime }
                     val xValues = filteredCGMData.map { it.timeFloat }
                     val yValues = filteredCGMData.map { it.value }
                     series(x = xValues, y = yValues)
@@ -55,11 +59,18 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
     CartesianChartHost(
         rememberCartesianChart(
             rememberLineCartesianLayer(
+                lines = listOf(
+                    rememberLineSpec(
+                        point =
+                        ShapeComponent(Shape.Pill, MaterialTheme.colorScheme.primary.toArgb()),
+                        pointSize = 4.dp,
+                    ),
+                ),
                 verticalAxisPosition = AxisPosition.Vertical.Start,
                 axisValueOverrider = AxisValueOverrider.fixed(
-                        minX = oneDayAgo.toFloat(),
-                        maxX = currentTime.toFloat(),
-            )
+                    minX = oneDayAgo.toFloat(),
+                    maxX = currentTime.toFloat(),
+                )
             ),
             startAxis = rememberStartAxis(
                 horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
