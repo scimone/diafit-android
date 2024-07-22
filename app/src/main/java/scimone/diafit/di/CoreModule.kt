@@ -14,7 +14,6 @@ import scimone.diafit.core.domain.repository.BolusRepository
 import scimone.diafit.core.domain.repository.CGMRepository
 import scimone.diafit.core.domain.repository.CarbsRepository
 import scimone.diafit.core.domain.use_cases.CommonUseCases
-import scimone.diafit.core.domain.use_cases.Get5MinCGMRateAvgUseCase
 import scimone.diafit.core.domain.use_cases.GetAllBolusFromTodayUseCase
 import scimone.diafit.core.domain.use_cases.GetAllBolusSinceUseCase
 import scimone.diafit.core.domain.use_cases.GetAllCGMSinceUseCase
@@ -74,7 +73,6 @@ object CoreModule {
             getAllCarbsSinceUseCase = GetAllCarbsSinceUseCase(carbsRepository),
             getAllBolusFromTodayUseCase = GetAllBolusFromTodayUseCase(bolusRepository),
             getAllCarbsFromTodayUseCase = GetAllCarbsFromTodayUseCase(carbsRepository),
-            get5MinCGMRateAvgUseCase = Get5MinCGMRateAvgUseCase(cgmRepository)
-        )
+            )
     }
 }

@@ -11,6 +11,6 @@ data class CGMEntity(
     val timestamp: Long,
     val timestampString: String = "",
     val value: Int,
-    val rate: Float,
+    var rate: Float,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 )

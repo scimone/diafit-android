@@ -27,22 +27,9 @@ class HomeViewModel @Inject constructor(
         loadBolus()
         loadCarbs()
         loadCGM()
-        load5MinCGMRateAvg()
         loadAllCGMSince24h()
         updateCountdown()
     }
-
-    private val startOfDay: Long
-        get() {
-            val calendar = Calendar.getInstance()
-            calendar.set(Calendar.HOUR_OF_DAY, 0)
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
-            // log time string
-            Log.d("HomeViewModel", "startOfDay: ${timestampToDateTimeString(calendar.timeInMillis)}")
-            return calendar.timeInMillis
-        }
 
     private val nowMinus24h: Long
         get() {
@@ -78,22 +65,17 @@ class HomeViewModel @Inject constructor(
     private fun loadCGM() {
         viewModelScope.launch {
             commonUseCases.getLatestCGMUseCase().collect { cgm ->
+                cgm.rate = normalizeRate(cgm.rate)
                 _state.value = _state.value.copy(latestCGM = cgm)
             }
         }
     }
 
-    private fun load5MinCGMRateAvg() {
-        viewModelScope.launch {
-            commonUseCases.get5MinCGMRateAvgUseCase().collect { rateAvg ->
-                val normalizedRate = rateAvg?.let {
-                    // Clamp the rate to [-4, 4] and normalize to [0, 1]
-                    ((it.coerceIn(-4f, 4f) + 4) / 8)
-                }
-                _state.value = _state.value.copy(rateAvg = normalizedRate)
-            }
-        }
+    private fun normalizeRate(rate: Float): Float {
+        // Clamp the rate to [-3, 3] and normalize to [0, 1]
+        return ((rate.coerceIn(-3f, 3f) + 3) / 6)
     }
+
 
     private fun loadAllCGMSince24h() {
         viewModelScope.launch {

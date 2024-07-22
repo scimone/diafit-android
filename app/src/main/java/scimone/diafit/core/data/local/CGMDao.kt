@@ -12,9 +12,6 @@ interface CGMDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCGM(cgmValue: CGMEntity)
 
-    @Query("SELECT AVG(rate) FROM CGMEntity WHERE timestamp >= :start AND timestamp <= :end")
-    fun get5MinCGMRateAvg(start: Long, end: Long): Flow<Float?>
-
     @Query("SELECT * FROM CGMEntity WHERE timestamp >= :start ORDER BY timestamp ASC")
     fun getAllCGMSince(start: Long): Flow<List<CGMEntity>>
 
