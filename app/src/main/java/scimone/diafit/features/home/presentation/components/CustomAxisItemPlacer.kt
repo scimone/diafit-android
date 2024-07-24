@@ -2,11 +2,10 @@ package scimone.diafit.features.home.presentation.components
 
 import com.patrykandpatrick.vico.core.cartesian.CartesianDrawContext
 import com.patrykandpatrick.vico.core.cartesian.CartesianMeasureContext
-import com.patrykandpatrick.vico.core.cartesian.axis.AxisItemPlacer
 import com.patrykandpatrick.vico.core.cartesian.axis.AxisPosition
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 
-class CustomAxisItemPlacer : AxisItemPlacer.Vertical {
+class CustomAxisItemPlacer : VerticalAxis.ItemPlacer {
     override fun getShiftTopLines(context: CartesianDrawContext): Boolean = true
 
     override fun getLabelValues(
@@ -14,26 +13,26 @@ class CustomAxisItemPlacer : AxisItemPlacer.Vertical {
         axisHeight: Float,
         maxLabelHeight: Float,
         position: AxisPosition.Vertical
-    ): List<Float> = listOf(70f, 180f)
+    ): List<Double> = listOf(70.0, 180.0)
 
     override fun getWidthMeasurementLabelValues(
         context: CartesianMeasureContext,
         axisHeight: Float,
         maxLabelHeight: Float,
         position: AxisPosition.Vertical
-    ): List<Float> = listOf(70f, 180f)
+    ): List<Double> = listOf(70.0, 180.0)
 
     override fun getHeightMeasurementLabelValues(
         context: CartesianMeasureContext,
         position: AxisPosition.Vertical
-    ): List<Float> = listOf(70f, 180f)
+    ): List<Double> = listOf(70.0, 180.0)
 
     override fun getLineValues(
         context: CartesianDrawContext,
         axisHeight: Float,
         maxLabelHeight: Float,
         position: AxisPosition.Vertical
-    ): List<Float>? = listOf(70f, 180f)
+    ): List<Double> = listOf(70.0, 180.0)
 
     override fun getTopVerticalAxisInset(
         context: CartesianMeasureContext,
