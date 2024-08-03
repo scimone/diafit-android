@@ -19,6 +19,7 @@ import com.patrykandpatrick.vico.compose.cartesian.marker.rememberDefaultCartesi
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoZoomState
+import com.patrykandpatrick.vico.compose.common.fill
 import com.patrykandpatrick.vico.core.cartesian.Scroll
 import com.patrykandpatrick.vico.core.cartesian.Zoom
 import com.patrykandpatrick.vico.core.cartesian.axis.Axis.Position
@@ -78,6 +79,15 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
                                 )
                             ),
                             thickness = 0.7.dp,
+                            fill = LineCartesianLayer.LineFill.double(
+                                topFill = fill(aboveRange),
+                                bottomFill = fill(belowRange),
+                            ) { 180 },
+//                            areaFill =
+//                            LineCartesianLayer.AreaFill.double(
+//                                topFill = fill(aboveRange),
+//                                bottomFill = fill(belowRange),
+//                            ) { 180 },
                             )
                     ),
                 verticalAxisPosition = Position.Vertical.Start,
