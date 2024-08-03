@@ -2,7 +2,7 @@ package scimone.diafit.features.home.presentation.components
 
 import com.patrykandpatrick.vico.core.cartesian.CartesianDrawContext
 import com.patrykandpatrick.vico.core.cartesian.CartesianMeasureContext
-import com.patrykandpatrick.vico.core.cartesian.axis.AxisPosition
+import com.patrykandpatrick.vico.core.cartesian.axis.Axis.Position
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 
 class CustomAxisItemPlacer : VerticalAxis.ItemPlacer {
@@ -12,26 +12,26 @@ class CustomAxisItemPlacer : VerticalAxis.ItemPlacer {
         context: CartesianDrawContext,
         axisHeight: Float,
         maxLabelHeight: Float,
-        position: AxisPosition.Vertical
+        position: Position.Vertical
     ): List<Double> = listOf(70.0, 180.0)
 
     override fun getWidthMeasurementLabelValues(
         context: CartesianMeasureContext,
         axisHeight: Float,
         maxLabelHeight: Float,
-        position: AxisPosition.Vertical
+        position: Position.Vertical
     ): List<Double> = listOf(70.0, 180.0)
 
     override fun getHeightMeasurementLabelValues(
         context: CartesianMeasureContext,
-        position: AxisPosition.Vertical
+        position: Position.Vertical
     ): List<Double> = listOf(70.0, 180.0)
 
     override fun getLineValues(
         context: CartesianDrawContext,
         axisHeight: Float,
         maxLabelHeight: Float,
-        position: AxisPosition.Vertical
+        position: Position.Vertical
     ): List<Double> = listOf(70.0, 180.0)
 
     override fun getTopVerticalAxisInset(

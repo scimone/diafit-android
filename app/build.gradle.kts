@@ -101,7 +101,7 @@ dependencies {
 
 
     // Vico Charts
-    val vicoVersion = "2.0.0-alpha.25"
+    val vicoVersion = "2.0.0-alpha.27"
     // For Jetpack Compose.
     implementation("com.patrykandpatrick.vico:compose:$vicoVersion")
 

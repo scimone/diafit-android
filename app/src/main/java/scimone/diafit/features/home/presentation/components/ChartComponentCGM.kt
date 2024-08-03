@@ -21,7 +21,7 @@ import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoZoomState
 import com.patrykandpatrick.vico.core.cartesian.Scroll
 import com.patrykandpatrick.vico.core.cartesian.Zoom
-import com.patrykandpatrick.vico.core.cartesian.axis.AxisPosition
+import com.patrykandpatrick.vico.core.cartesian.axis.Axis.Position
 import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.AxisValueOverrider
@@ -68,20 +68,19 @@ fun ChartComponentCGM(allCGMFromToday: List<CGMChartData>) {
                 lineProvider =
                     LineCartesianLayer.LineProvider.series(
                         rememberLine(
-                            pointProvider =
-                                LineCartesianLayer.PointProvider.single(
-                                    rememberPoint(
-                                        component = ShapeComponent(
-                                            shape = Shape.Pill,
-                                            color = MaterialTheme.colorScheme.primary.toArgb(),
-                                        ),
-                                        size = 4.dp,
-                                    )
-                                ),
-                            thickness = 0.5.dp,
-                        ),
-                ),
-                verticalAxisPosition = AxisPosition.Vertical.Start,
+                            pointProvider = LineCartesianLayer.PointProvider.single(
+                                rememberPoint(
+                                    component = ShapeComponent(
+                                        shape = Shape.Pill,
+                                        color = MaterialTheme.colorScheme.onBackground.toArgb(),
+                                    ),
+                                    size=4.dp
+                                )
+                            ),
+                            thickness = 0.7.dp,
+                            )
+                    ),
+                verticalAxisPosition = Position.Vertical.Start,
                 axisValueOverrider = AxisValueOverrider.fixed(
                     minX = oneDayAgo.toDouble(),
                     maxX = currentTime.toDouble(),
