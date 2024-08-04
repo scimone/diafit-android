@@ -39,7 +39,7 @@ class CGMReceiver : BroadcastReceiver() {
         val rate = intent.getFloatExtra(RATE, 0f)
         val timestamp = intent.getLongExtra(TIMESTAMP, 0)
 
-        Log.i(TAG, "Received new CGM value: $cgmValue")
+        Log.i(TAG, "Received new CGM value from broadcast intent: $cgmValue")
 
         // Insert CGM value into the database
         insertCGMValue(timestamp, cgmValue, rate)

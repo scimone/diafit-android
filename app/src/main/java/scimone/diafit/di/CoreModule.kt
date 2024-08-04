@@ -6,7 +6,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import scimone.diafit.core.data.local.AppDatabase
+import scimone.diafit.core.data.remote.NightscoutAPI
 import scimone.diafit.core.data.repository.BolusRepositoryImpl
 import scimone.diafit.core.data.repository.CGMRepositoryImpl
 import scimone.diafit.core.data.repository.CarbsRepositoryImpl
@@ -28,6 +33,19 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object CoreModule {
+
+    @Provides
+    @Singleton
+    fun provideNightscoutApi(): NightscoutAPI {
+        return Retrofit.Builder()
+            .baseUrl(NightscoutAPI.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(
+                OkHttpClient.Builder()
+                .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }).build())
+            .build()
+            .create(NightscoutAPI::class.java)
+    }
 
     @Provides
     @Singleton

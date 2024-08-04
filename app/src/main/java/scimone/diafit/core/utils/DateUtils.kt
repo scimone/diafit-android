@@ -24,4 +24,17 @@ object DateUtils {
         val seconds = calendar.get(Calendar.SECOND)
         return hours + minutes / 60f + seconds / 3600f
     }
+
+    fun nowMinusXMinutes(minutes: Int): Long {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MINUTE, -minutes)
+        return calendar.timeInMillis
+    }
+
+    fun timestampToISOString(timestamp: Long): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
+        return dateFormat.format(Date(timestamp))
+    }
 }

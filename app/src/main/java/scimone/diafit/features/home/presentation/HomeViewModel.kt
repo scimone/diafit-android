@@ -31,13 +31,7 @@ class HomeViewModel @Inject constructor(
         updateCountdown()
     }
 
-    private val nowMinus24h: Long
-        get() {
-            val calendar = Calendar.getInstance()
-            calendar.add(Calendar.HOUR_OF_DAY, -24) // Subtract 24 hours from the current time
-            Log.d("HomeViewModel", "nowMinus24h: ${timestampToDateTimeString(calendar.timeInMillis)}")
-            return calendar.timeInMillis
-        }
+    private val nowMinus24h = DateUtils.nowMinusXMinutes(24 * 60)
 
     private fun loadBolus() {
         viewModelScope.launch {
