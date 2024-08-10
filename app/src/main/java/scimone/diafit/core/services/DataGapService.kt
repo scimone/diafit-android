@@ -96,7 +96,7 @@ class DataGapService @AssistedInject constructor(
         const val LOOKBACK_TIME = 60  // lookback time in minutes
         const val EXPECTED_INTERVAL = 7 * 60 * 1000  // expected interval between CGM entries in milliseconds
         fun scheduleWork(context: Context) {
-            val workRequest = PeriodicWorkRequestBuilder<DataGapService>(FREQUENCY, TimeUnit.MINUTES)
+            val workRequest = PeriodicWorkRequestBuilder<DataGapService>(FREQUENCY, TimeUnit.HOURS)
                 .build()
             WorkManager.getInstance(context).enqueue(workRequest)
         }

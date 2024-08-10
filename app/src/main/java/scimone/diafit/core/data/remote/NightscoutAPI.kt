@@ -14,6 +14,6 @@ interface NightscoutAPI {
 
     companion object {
         const val API_KEY = ""
-        const val BASE_URL = ""
+        const val BASE_URL = "https://gluco.mooo.com"
     }
 }

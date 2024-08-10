@@ -16,9 +16,9 @@ val HintGray = Color(0xFFA0A0A0)
 val Black = Color(0xFF000000)
 
 // Entity colors
-val inRange = Color(0xFF2fa38e)
-val belowRange = Color(0xFFde6542)
-val aboveRange = Color(0xFFa869ff)
+val inRange = Color(0xFF4ed1b0)
+val belowRange = Color(0xFFf78c5b)
+val aboveRange = Color(0xFFb89aff)
 val carbs = Color(0xFFb45c0c)
 val bolus = Color(0xFF0170ff)
 val basal = Color(0xFFFF0000)
