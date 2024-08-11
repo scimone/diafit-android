@@ -48,11 +48,11 @@ fun ChartComponentCGM(values: List<CGMChartData>) {
     val modelProducer = remember { CartesianChartModelProducer.build() }
     val currentTime = System.currentTimeMillis()
     val oneDayAgo = currentTime - 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+    val filteredValues =
+        values.filter { it.timeFloat >= oneDayAgo && it.timeFloat <= currentTime }
 
-
-    LaunchedEffect(values) {
-        if (values.isNotEmpty()) {
-            val filteredValues = values.filter { it.timeFloat >= oneDayAgo && it.timeFloat <= currentTime }
+    LaunchedEffect(filteredValues) {
+        if (filteredValues.isNotEmpty()) {
 
             val belowRangePoints = filteredValues.filter { it.value < 70 }
             val inRangePoints = filteredValues.filter { it.value in 70..180 }
@@ -60,28 +60,33 @@ fun ChartComponentCGM(values: List<CGMChartData>) {
 
             modelProducer.runTransaction {
                 lineSeries {
-                    series(
-                        x = belowRangePoints.map { it.timeFloat },
-                        y = belowRangePoints.map { it.value }
-                    )
-                    series(
-                        x = inRangePoints.map { it.timeFloat },
-                        y = inRangePoints.map { it.value }
-                    )
-                    series(
-                        x = aboveRangePoints.map { it.timeFloat },
-                        y = aboveRangePoints.map { it.value }
-                    )
+                    if (belowRangePoints.isNotEmpty()) {
+                        series(
+                            x = belowRangePoints.map { it.timeFloat },
+                            y = belowRangePoints.map { it.value }
+                        )
+                    }
+                    if (inRangePoints.isNotEmpty()) {
+                        series(
+                            x = inRangePoints.map { it.timeFloat },
+                            y = inRangePoints.map { it.value }
+                        )
+                    }
+                    if (aboveRangePoints.isNotEmpty()) {
+                        series(
+                            x = aboveRangePoints.map { it.timeFloat },
+                            y = aboveRangePoints.map { it.value }
+                        )
+                    }
                 }
             }
         }
     }
 
-    val colors = listOf(
-        belowRange,
-        inRange,
-        aboveRange
-    )
+    val colors = mutableListOf<Color>()
+    if (filteredValues.any { it.value < 70 }) colors.add(belowRange)
+    if (filteredValues.any { it.value in 70..180 }) colors.add(inRange)
+    if (filteredValues.any { it.value > 180 }) colors.add(aboveRange)
 
     CartesianChartHost(
         chart = rememberCartesianChart(
@@ -156,4 +161,4 @@ fun ChartComponentCGM(values: List<CGMChartData>) {
         zoomState = rememberVicoZoomState(zoomEnabled = true, initialZoom = Zoom.Companion.Content),
         scrollState = rememberVicoScrollState(initialScroll = Scroll.Absolute.Companion.End)
     )
-}
+    }
